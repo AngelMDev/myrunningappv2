@@ -13,7 +13,7 @@ import xyz.angel.rpgym.R;
 public class Run_Module extends AppCompatActivity {
 
     Button startRunButton, stopRunButton, beginActivityRunButton;
-    TextView distanceViewRun, speedViewRun, altitudeViewSummary, dateViewSummary, distanceViewSummary, speedAvgViewSummary, speedMaxViewSummary, paceViewSummary, 
+    TextView distanceViewRun, speedViewRun, altitudeViewSummary, dateViewSummary, distanceViewSummary, speedAvgViewSummary, speedMaxViewSummary, paceViewSummary, timeViewSummary;
     ViewFlipper viewFlipper;
 
 
@@ -28,7 +28,15 @@ public class Run_Module extends AppCompatActivity {
         startRunButton=(Button) findViewById(R.id.startRunButton);
         stopRunButton=(Button) findViewById(R.id.stopRunButton);
         beginActivityRunButton=(Button) findViewById(R.id.beginActivityButton);
-
+        distanceViewRun=(TextView) findViewById(R.id.distance_view_run);
+        speedViewRun=(TextView) findViewById(R.id.speed_view_run);
+        altitudeViewSummary=(TextView) findViewById(R.id.altitude_view_summary);
+        dateViewSummary=(TextView) findViewById(R.id.date_view_summary);
+        distanceViewSummary=(TextView) findViewById(R.id.distance_view_summary);
+        speedAvgViewSummary=(TextView) findViewById(R.id.speed_avg_view_summary);
+        speedMaxViewSummary=(TextView) findViewById(R.id.speed_max_view_summary);
+        paceViewSummary=(TextView) findViewById(R.id.pace_view_summary);
+        timeViewSummary=(TextView) findViewById(R.id.time_view_summary);
 
     }
 

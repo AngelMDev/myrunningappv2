@@ -17,7 +17,9 @@ public class MainActivity extends AppCompatActivity {
         initializeComponents();
     }
     private void initializeComponents() {
+
         runButton=(Button) findViewById(R.id.run_module_button);
+
     }
 
     public void startRunModule(View view){
