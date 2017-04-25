@@ -246,7 +246,7 @@
                 android:layout_marginStart="32dp" />
 
             <Button
-                android:id="@+id/startRunButton"
+                android:id="@+id/stopRunButton"
                 android:layout_width="139dp"
                 android:layout_height="72dp"
                 android:layout_marginRight="32dp"
@@ -257,7 +257,7 @@
                 android:layout_marginEnd="32dp" />
 
             <Button
-                android:id="@+id/stopRunButton"
+                android:id="@+id/startRunButton"
                 android:layout_width="139dp"
                 android:layout_height="72dp"
                 android:layout_marginLeft="32dp"
