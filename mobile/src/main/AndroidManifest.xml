@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Run_Module.Run_Module"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

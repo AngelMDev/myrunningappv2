@@ -1,8 +1,10 @@
 package xyz.angel.rpgym.Run_Module;
 
+import android.content.DialogInterface;
 import android.location.Location;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +14,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.Series;
+
 import xyz.angel.rpgym.R;
 import xyz.angel.rpgym.msChronometer;
 
@@ -19,6 +26,7 @@ public class Run_Module extends AppCompatActivity {
 
     Button startRunButton, stopRunButton, beginActivityRunButton;
     TextView distanceViewRun, speedViewRun, altitudeViewSummary, dateViewSummary, distanceViewSummary, speedAvgViewSummary, speedMaxViewSummary, paceViewSummary, timeViewSummary, accuracyView;
+    GraphView graph;
     msChronometer chronometer;
     ViewFlipper viewFlipper;
     RunEngine runEngine;
@@ -34,12 +42,12 @@ public class Run_Module extends AppCompatActivity {
         setContentView(R.layout.activity_run__module);
         initComponents();
         setUpButtons();
-        runEngine=new RunEngine();
+        runEngine = new RunEngine();
     }
 
     @Override
     protected void onStart() {
-        runEngine.RunEngine(this,this);
+        runEngine.RunEngine(this, this);
         super.onStart();
     }
 
@@ -49,22 +57,23 @@ public class Run_Module extends AppCompatActivity {
     }
 
     private void initComponents() {
-        startRunButton=(Button) findViewById(R.id.startRunButton);
-        stopRunButton=(Button) findViewById(R.id.stopRunButton);
-        beginActivityRunButton=(Button) findViewById(R.id.beginActivityButton);
-        distanceViewRun=(TextView) findViewById(R.id.distance_view_run);
-        speedViewRun=(TextView) findViewById(R.id.speed_view_run);
-        altitudeViewSummary=(TextView) findViewById(R.id.altitude_view_summary);
-        dateViewSummary=(TextView) findViewById(R.id.date_view_summary);
-        distanceViewSummary=(TextView) findViewById(R.id.distance_view_summary);
-        speedAvgViewSummary=(TextView) findViewById(R.id.speed_avg_view_summary);
-        speedMaxViewSummary=(TextView) findViewById(R.id.speed_max_view_summary);
-        paceViewSummary=(TextView) findViewById(R.id.pace_view_summary);
-        timeViewSummary=(TextView) findViewById(R.id.time_view_summary);
-        viewFlipper=(ViewFlipper) findViewById(R.id.viewFlipper);
-       // chronometer=(msChronometer) findViewById(R.id.chrono_view_run);
+        startRunButton = (Button) findViewById(R.id.startRunButton);
+        stopRunButton = (Button) findViewById(R.id.stopRunButton);
+        beginActivityRunButton = (Button) findViewById(R.id.beginActivityButton);
+        distanceViewRun = (TextView) findViewById(R.id.distance_view_run);
+        speedViewRun = (TextView) findViewById(R.id.speed_view_run);
+        altitudeViewSummary = (TextView) findViewById(R.id.altitude_view_summary);
+        dateViewSummary = (TextView) findViewById(R.id.date_view_summary);
+        distanceViewSummary = (TextView) findViewById(R.id.distance_view_summary);
+        speedAvgViewSummary = (TextView) findViewById(R.id.speed_avg_view_summary);
+        speedMaxViewSummary = (TextView) findViewById(R.id.speed_max_view_summary);
+        paceViewSummary = (TextView) findViewById(R.id.pace_view_summary);
+        timeViewSummary = (TextView) findViewById(R.id.time_view_summary);
+        viewFlipper = (ViewFlipper) findViewById(R.id.viewFlipper);
+        // chronometer=(msChronometer) findViewById(R.id.chrono_view_run);
+        graph=(GraphView) findViewById(R.id.graphStats);
 
-        Log.d("INIT","Init Complete");
+        Log.d("INIT", "Init Complete");
     }
 
     private void setUpButtons() {
@@ -94,19 +103,19 @@ public class Run_Module extends AppCompatActivity {
         });
 
     }
-    
-    public void distanceUpdate(){
-        handler=new Handler();
-        runnable=new Runnable() {
+
+    public void distanceUpdate() {
+        handler = new Handler();
+        runnable = new Runnable() {
             @Override
             public void run() {
-                distance=runEngine.getCurrentDistance();
-                speed=runEngine.getCurrentSpeed();
+                distance = runEngine.getCurrentDistance();
+                speed = runEngine.getCurrentSpeed();
                 updateViews();
-                handler.postDelayed(this,1000);
+                handler.postDelayed(this, 1000);
             }
         };
-        handler.postDelayed(runnable,1000);
+        handler.postDelayed(runnable, 1000);
     }
 
     private void updateViews() {
@@ -114,11 +123,11 @@ public class Run_Module extends AppCompatActivity {
         speedViewRun.setText(String.valueOf(String.format("%.2f", speed)) + " m/s");
     }
 
-    public void locationUpdates(Location currentLocation){
-        float accuracy=currentLocation.getAccuracy();
+    public void locationUpdates(Location currentLocation) {
+        float accuracy = currentLocation.getAccuracy();
 
         if (accuracy < 10) {
-           // beginActivityRunButton.setBackgroundColor(ContextCompat.getColor(this, R.color.materialGreen));
+            // beginActivityRunButton.setBackgroundColor(ContextCompat.getColor(this, R.color.materialGreen));
             //beginActivityRunButton.setClickable(true);
         }
         if (accuracy > 20) {
@@ -126,9 +135,9 @@ public class Run_Module extends AppCompatActivity {
 //            beginActivityRunButton.setBackgroundColor(ContextCompat.getColor(this, R.color.materialGray));
 //            beginActivityRunButton.setClickable(true);//TODO: set to false on release
 
-          //  calcMaxSpeed(speed);
-           // speedF = String.format("%.2f", speed);
-           // speedTextView.setText(String.valueOf(speedF) + " m/s");
+            //  calcMaxSpeed(speed);
+            // speedF = String.format("%.2f", speed);
+            // speedTextView.setText(String.valueOf(speedF) + " m/s");
         }
     }
 
@@ -138,9 +147,9 @@ public class Run_Module extends AppCompatActivity {
         viewFlipper.showNext();
     }
 
-    private void flipLeft(){
+    private void flipLeft() {
         viewFlipper.setInAnimation(this, R.anim.slide_in_from_left);
-        viewFlipper.setOutAnimation(this,R.anim.slide_out_to_right);
+        viewFlipper.setOutAnimation(this, R.anim.slide_out_to_right);
         viewFlipper.showPrevious();
     }
 
@@ -159,8 +168,54 @@ public class Run_Module extends AppCompatActivity {
         return super.onKeyDown(keyCode, event);
     }
 
-    public void sendStats(float maxSpeed, double avgSpeed, long time, double distance){
-
+    public void sendStats(float maxSpeed, double avgSpeed, long time, double distance, DataPoint[] altPoints) {
+        //TODO dont attemp to build graph if array is null, perform checks.
+        LineGraphSeries<DataPoint>series=new LineGraphSeries<>(altPoints);
+        graph.addSeries(series);
     }
 
+    boolean ans = false;
+
+    //TODO: dialog is not building...
+    public boolean getStopDialogAnswer() {
+        Log.d("DIALOG","Sent build signal");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.dialog_stop_run)
+                .setPositiveButton(R.string.stop, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ans = true;
+                        //handler.removeCallbacks(runnable);
+                        flipRight();
+                        flipRight();
+                    }
+                })
+                .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ans = false;
+            }
+        });
+        flipRight();
+        flipRight();
+        return true;
+    }
 }
+/*
+})
+                    .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                            if (dialogPaused) {
+                                startPauseRun(view);
+                                dialogPaused = false;
+                            }
+                        }
+                    })
+                    .show();
+
+            //  }
+        }
+
+
+ */
